@@ -1,5 +1,4 @@
 const path = require("path");
-const fs = require("fs");
 
 require("dotenv").config({
   path: path.join(__dirname, ".env.local"),
@@ -15,7 +14,6 @@ const flash = require("connect-flash");
 const multer = require("multer");
 const helmet = require("helmet");
 const compression = require("compression");
-const morgan = require("morgan");
 
 const User = require("./models/user");
 
@@ -60,11 +58,6 @@ app.use(
 );
 app.use(express.static(path.join(__dirname, "public")));
 
-const accessLogStream = fs.createWriteStream(
-  path.join(__dirname, "access.log"),
-  { flags: "a" },
-);
-
 // Security middleware to set various HTTP headers
 app.use(
   helmet({
@@ -91,7 +84,6 @@ app.use(
   })
 ); 
 app.use(compression()); // Compression middleware to gzip responses
-app.use(morgan("combined", { stream: accessLogStream })); // Logging middleware to log HTTP requests
 
 app.use("/images", express.static(path.join(__dirname, "images")));
 app.use(
