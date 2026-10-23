@@ -1,0 +1,6 @@
+.env.local
+.env.*
+nodemon.json
+node_modules/
+server.key
+server.crt

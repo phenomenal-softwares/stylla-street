@@ -1,0 +1,70 @@
+<div class="backdrop" data-menu-close></div>
+<header class="site-header">
+    <div class="header-inner">
+        <a class="brand" href="/" aria-label="Stylla Street home">
+            <span class="brand-mark"><i class="fa-regular fa-clock" aria-hidden="true"></i></span>
+            <span class="brand-name">Stylla Street</span>
+        </a>
+
+        <nav class="primary-nav" aria-label="Main navigation">
+            <ul class="primary-nav__links">
+                <li><a class="nav-link <%= path === '/' ? 'active' : '' %>" href="/">Home</a></li>
+                <li><a class="nav-link <%= path === '/product-list' ? 'active' : '' %>" href="/products">Watches</a></li>
+                <% if (isAuthenticated) { %>
+                    <li><a class="nav-link <%= path === '/orders' ? 'active' : '' %>" href="/orders">Orders</a></li>
+                    <li><a class="nav-link <%= path === '/admin/products' ? 'active' : '' %>" href="/admin/products">My listings</a></li>
+                <% } %>
+            </ul>
+        </nav>
+
+        <div class="header-actions">
+            <% if (isAuthenticated && user) { %>
+                <span class="header-actions__user"><i class="fa-regular fa-circle-user" aria-hidden="true"></i><%= user.email.split("@")[0] %></span>
+                <ul class="header-actions__links">
+                    <li><a class="nav-link <%= path === '/cart' ? 'active' : '' %>" href="/cart" aria-label="Shopping cart"><i class="fa-solid fa-bag-shopping" aria-hidden="true"></i> Cart</a></li>
+                    <li><a class="nav-link <%= path === '/admin/add-product' ? 'active' : '' %>" href="/admin/add-product">List a watch</a></li>
+                    <li>
+                        <form action="/logout" method="post">
+                            <input type="hidden" value="<%= csrfToken %>" name="_csrf">
+                            <button type="submit">Log out</button>
+                        </form>
+                    </li>
+                </ul>
+            <% } else { %>
+                <ul class="header-actions__links">
+                    <li><a class="header-login" href="/login">Log in</a></li>
+                    <li><a class="btn" href="/signup">Join the demo</a></li>
+                </ul>
+            <% } %>
+            <button class="mobile-menu-toggle" id="side-menu-toggle" type="button" aria-label="Open menu" aria-controls="mobile-menu" aria-expanded="false">
+                <i class="fa-solid fa-bars" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
+</header>
+
+<nav class="mobile-nav" id="mobile-menu" aria-label="Mobile navigation">
+    <button class="mobile-nav__close" type="button" aria-label="Close menu" data-menu-close><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+    <% if (isAuthenticated && user) { %>
+        <p class="mobile-nav__identity"><i class="fa-regular fa-circle-user" aria-hidden="true"></i> Signed in as <%= user.email.split("@")[0] %></p>
+    <% } %>
+    <ul class="mobile-nav__item-list">
+        <li class="mobile-nav__item"><a class="<%= path === '/' ? 'active' : '' %>" href="/">Home</a></li>
+        <li class="mobile-nav__item"><a class="<%= path === '/product-list' ? 'active' : '' %>" href="/products">Watches</a></li>
+        <% if (isAuthenticated) { %>
+            <li class="mobile-nav__item"><a class="<%= path === '/cart' ? 'active' : '' %>" href="/cart">Cart</a></li>
+            <li class="mobile-nav__item"><a class="<%= path === '/orders' ? 'active' : '' %>" href="/orders">Orders</a></li>
+            <li class="mobile-nav__item"><a class="<%= path === '/admin/add-product' ? 'active' : '' %>" href="/admin/add-product">List a watch</a></li>
+            <li class="mobile-nav__item"><a class="<%= path === '/admin/products' ? 'active' : '' %>" href="/admin/products">My listings</a></li>
+            <li class="mobile-nav__item">
+                <form action="/logout" method="post">
+                    <input type="hidden" value="<%= csrfToken %>" name="_csrf">
+                    <button type="submit"><i class="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i> Log out</button>
+                </form>
+            </li>
+        <% } else { %>
+            <li class="mobile-nav__item"><a class="<%= path === '/login' ? 'active' : '' %>" href="/login">Log in</a></li>
+            <li class="mobile-nav__item"><a class="<%= path === '/signup' ? 'active' : '' %>" href="/signup">Join the demo</a></li>
+        <% } %>
+    </ul>
+</nav>

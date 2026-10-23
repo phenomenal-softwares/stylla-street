@@ -1,0 +1,26 @@
+<%- include('../includes/head.ejs') %>
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+        <main class="product-detail-page">
+            <p class="eyebrow eyebrow--dark">Community showcase · Demo listing</p>
+            <div class="product-detail-layout">
+                <div class="product-image">
+                    <img src="<%= product.imageUrl %>" alt="<%= product.title %>">
+                </div>
+                <section class="product-detail-copy">
+                    <h1><%= product.title %></h1>
+                    <p class="product__creator">Shared by <%= product.createdBy %></p>
+                    <p class="product__price">$<%= product.price %></p>
+                    <p class="product__description"><%= product.description %></p>
+                    <p class="product-detail-demo"><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Demo listing only. No real sale or purchase will take place.</p>
+                    <% if (isAuthenticated) { %>
+                        <%- include('../includes/add-to-cart.ejs', {product: product}) %>
+                    <% } else { %>
+                        <a class="btn" href="/login">Log in to add to cart</a>
+                    <% } %>
+                </section>
+            </div>
+        </main>
+        <%- include('../includes/end.ejs') %>

@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json.schemastore.org/package",
+  "name": "stylla-street",
+  "version": "1.0.0",
+  "description": "full-stack CRUD shopping application",
+  "license": "ISC",
+  "author": "Abiodun Ojo",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "start:server": "node app.js",
+    "start:dev": "nodemon app.js",
+    "start:dev:https": "set HTTPS=true&& nodemon app.js"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "eslint": "^9.39.5",
+    "globals": "^17.7.0",
+    "nodemon": "^3.1.14"
+  },
+  "dependencies": {
+    "@supabase/server": "^1.9.2",
+    "@supabase/supabase-js": "^2.118.0",
+    "bcryptjs": "^3.0.3",
+    "body": "^5.1.0",
+    "compression": "^1.8.2",
+    "connect-flash": "^0.1.1",
+    "connect-mongodb-session": "^5.0.0",
+    "csurf": "^1.11.0",
+    "dotenv": "^17.4.2",
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
+    "express-handlebars": "3.0",
+    "express-session": "^1.19.0",
+    "express-validator": "^7.3.2",
+    "helmet": "^8.3.0",
+    "mongodb": "^7.5.0",
+    "mongoose": "^9.9.3",
+    "morgan": "^1.12.1",
+    "multer": "^2.3.0",
+    "mysql2": "^3.23.1",
+    "nodemailer": "^9.0.6",
+    "parser": "^0.1.4",
+    "pdfkit": "^0.20.2",
+    "pug": "^3.0.4",
+    "sequelize": "^6.37.8",
+    "stripe": "^22.6.2"
+  }
+}

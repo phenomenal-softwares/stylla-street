@@ -1,0 +1,45 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/auth.css">
+</head>
+
+<body>
+   <%- include('../includes/navigation.ejs') %>
+
+    <main>
+        <% if (errorMessage) { %>
+            <div class="user-message user-message--error"><%= errorMessage %></div>
+        <% } %>
+        <form class="login-form" action="/login" method="POST">
+            <div class="auth-form-heading">
+                <p class="eyebrow eyebrow--dark">Welcome back</p>
+                <h1>Log in to Stylla Street</h1>
+                <p>Sign in to save a watch to your demo cart or manage your listings.</p>
+            </div>
+            <div class="form-control">
+                <label for="email">E-Mail</label>
+                <input
+                    class="<%= validationErrors.some((e) => e.path === 'email') ? 'invalid' : '' %>" 
+                    type="email" 
+                    name="email" 
+                    id="email"
+                    value="<%= oldInput.email %>"
+                >
+            </div>
+            <div class="form-control">
+                <label for="password">Password</label>
+                <input 
+                    class="<%= validationErrors.some((e) => e.path === 'password') ? 'invalid' : '' %>"
+                    type="password" 
+                    name="password" 
+                    id="password"
+                    value="<%= oldInput.password %>"
+                >
+            </div>
+            <input type="hidden" value="<%= csrfToken %>" name="_csrf">
+            <button class="btn" type="submit"><i class="fa-solid fa-arrow-right-to-bracket" aria-hidden="true"></i> Log in</button>
+        </form>
+
+        <p class="auth-form-footnote centered">Forgot your password? <a href="/reset">Reset it here</a>.</p>
+    </main>
+<%- include('../includes/end.ejs') %>

@@ -1,0 +1,50 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/orders.css">
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+        <main>
+            <div class="catalog-heading">
+                <p class="eyebrow eyebrow--dark">Your activity</p>
+                <h1>Demo orders</h1>
+                <p>These order records are part of the demonstration only. No real purchase is made.</p>
+            </div>
+            <% if (orders && orders.length > 0) { %>
+                <ul class="orders__list">
+                    <% orders.forEach(order => { %>
+                        <li class="orders__item">
+                            <div class="orders__header">
+                                <h2>Order #<%= order._id %></h2>
+                                <% if (order.createdAt) { %>
+                                    <time datetime="<%= new Date(order.createdAt).toISOString() %>">
+                                        <%= new Date(order.createdAt).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' }) %>
+                                    </time>
+                                <% } %>
+                            </div>
+                            <ul class="orders__products">
+                                <% order.products.forEach(p => { %>
+                                    <li class="orders__product">
+                                        <span class="orders__product-image">
+                                            <img src="<%= p.product.imageUrl %>" alt="<%= p.product.title %>">
+                                        </span>
+                                        <span class="orders__title"><%= p.product.title %></span>
+                                        <span>Quantity: <%= p.quantity %></span>
+                                        <span>$<%= p.price %></span>
+                                    </li>
+                                <% }); %>
+                            </ul>
+                            <div class="orders__total">
+                                <strong>Total Price: $<%= order.totalPrice %></strong>
+                            </div>
+                            <div>
+                                <a href="/orders/<%= order._id %>/invoice" class="btn">Download Invoice</a>
+                            </div>
+                        </li>
+                    <% }); %>
+                </ul>
+            <% } else { %>
+                <p class="orders__empty">You have not placed any orders yet.</p>
+            <% } %>
+        </main>
+    <%- include('../includes/end.ejs') %>

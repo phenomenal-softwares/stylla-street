@@ -1,0 +1,129 @@
+<%- include('../includes/head.ejs') %>
+</head>
+
+<body>
+    <%- include('../includes/navigation.ejs') %>
+
+    <main class="home-page-main">
+        <section class="home-hero">
+            <div class="home-hero__inner">
+                <div class="home-hero__copy">
+                    <p class="eyebrow"><i class="fa-regular fa-clock" aria-hidden="true"></i> A wristwatch showcase</p>
+                    <h1>Time, with a little more <em>intention.</em></h1>
+                    <p class="home-hero__lead">Discover distinctive wristwatch listings and the stories behind them. Find a piece that feels like yours.</p>
+                    <div class="home-hero__actions">
+                        <a class="btn btn-gold" href="/products">Explore the watches <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                        <% if (isAuthenticated) { %>
+                            <a class="hero-text-link" href="/admin/add-product">Share a watch <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+                        <% } else { %>
+                            <a class="hero-text-link" href="/signup">Create a demo account <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+                        <% } %>
+                    </div>
+                    <p class="home-hero__disclaimer"><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Demo experience only. No real purchases are made.</p>
+                </div>
+
+                <div class="hero-watch-wrap">
+                    <div class="hero-orbit hero-orbit--one"></div>
+                    <div class="hero-orbit hero-orbit--two"></div>
+                    <% if (heroProduct) { %>
+                        <a class="hero-watch-card" href="/products/<%= heroProduct._id %>" aria-label="View <%= heroProduct.title %>">
+                            <span class="hero-watch-card__label">A featured listing</span>
+                            <div class="hero-watch-card__image">
+                                <img src="<%= heroProduct.imageUrl %>" alt="<%= heroProduct.title %>">
+                            </div>
+                            <div class="hero-watch-card__details">
+                                <span><%= heroProduct.title %></span>
+                                <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                            </div>
+                        </a>
+                    <% } else { %>
+                        <div class="hero-watch-card hero-watch-card--empty" aria-hidden="true">
+                            <span class="hero-watch-card__label">A moment for good design</span>
+                            <div class="watch-illustration"><i class="fa-regular fa-clock"></i></div>
+                            <div class="hero-watch-card__details"><span>Your next favourite watch</span><i class="fa-solid fa-sparkles"></i></div>
+                        </div>
+                    <% } %>
+                    <span class="hero-stamp"><i class="fa-solid fa-star" aria-hidden="true"></i> Curated<br>with care</span>
+                </div>
+            </div>
+            <div class="home-hero__bottom"><span>01 / A more personal marketplace</span><span>Scroll to discover <i class="fa-solid fa-arrow-down" aria-hidden="true"></i></span></div>
+        </section>
+
+        <section class="home-intro content-width">
+            <div>
+                <p class="eyebrow eyebrow--dark">A considered collection</p>
+                <h2>Good watches make every moment count.</h2>
+            </div>
+            <p>From everyday essentials to conversation starters, explore a small collection of community-listed watches. Every detail is here to help you discover your next favourite.</p>
+        </section>
+
+        <section class="featured-section content-width" id="featured">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow eyebrow--dark">The latest finds</p>
+                    <h2>Watches worth a closer look</h2>
+                </div>
+                <a class="section-link" href="/products">View all watches <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+            </div>
+
+            <% if (prods.length > 0) { %>
+                <div class="grid featured-grid">
+                    <% for (let product of prods) { %>
+                        <article class="card product-item featured-card">
+                            <a class="featured-card__image" href="/products/<%= product._id %>" aria-label="View <%= product.title %>">
+                                <span class="featured-card__badge"><i class="fa-solid fa-sparkles" aria-hidden="true"></i> Demo listing</span>
+                                <img src="<%= product.imageUrl %>" alt="<%= product.title %>">
+                            </a>
+                            <div class="featured-card__body">
+                                <div class="featured-card__title-row">
+                                    <h3 class="product__title"><%= product.title %></h3>
+                                    <span class="product__price">$<%= product.price %></span>
+                                </div>
+                                <p class="featured-card__description"><%= product.description %></p>
+                                <p class="product__creator">Shared by <%= product.createdBy %></p>
+                                <div class="featured-card__actions">
+                                    <a class="btn btn-secondary" href="/products/<%= product._id %>">View details <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                                    <% if (isAuthenticated) { %>
+                                        <%- include('../includes/add-to-cart.ejs', {product: product}) %>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </article>
+                    <% } %>
+                </div>
+            <% } else { %>
+                <div class="featured-empty">
+                    <i class="fa-regular fa-clock" aria-hidden="true"></i>
+                    <h3>The first listing is on its way.</h3>
+                    <p>Be the first to share a wristwatch with the Stylla Street community.</p>
+                    <% if (isAuthenticated) { %>
+                        <a class="btn" href="/admin/add-product">List a watch</a>
+                    <% } else { %>
+                        <a class="btn" href="/signup">Join the demo</a>
+                    <% } %>
+                </div>
+            <% } %>
+        </section>
+
+        <section class="home-values">
+            <div class="home-values__inner content-width">
+                <div class="home-value">
+                    <span class="home-value__icon"><i class="fa-solid fa-gem" aria-hidden="true"></i></span>
+                    <h3>Personal style</h3>
+                    <p>Explore watches with character, shared by people who appreciate them.</p>
+                </div>
+                <div class="home-value">
+                    <span class="home-value__icon"><i class="fa-solid fa-hand-sparkles" aria-hidden="true"></i></span>
+                    <h3>Thoughtfully simple</h3>
+                    <p>A clean, easy-to-browse showcase made for discovering the details.</p>
+                </div>
+                <div class="home-value">
+                    <span class="home-value__icon"><i class="fa-solid fa-heart" aria-hidden="true"></i></span>
+                    <h3>Made for the demo</h3>
+                    <p>Enjoy the experience, browse the listings and see the storefront in action.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <%- include('../includes/end.ejs') %>

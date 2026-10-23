@@ -1,0 +1,26 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/cart.css">
+    </head>
+
+  <body>
+    <%- include('../includes/navigation.ejs') %>
+    <main class="checkout">
+      <h1>Demo checkout</h1>
+      <p class="checkout-demo-note"><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Demo only: this creates a sample order in the app. No payment is collected and no real purchase will be made.</p>
+            <ul class="cart__item-list">
+                <% products.forEach(p => { %>
+                    <li class="cart__item">
+                        <img class="cart__image" src="<%= p.productId.imageUrl %>" alt="<%= p.productId.title %>">
+                        <h1><%= p.productId.title %></h1>
+                        <h2>Quantity: <%= p.quantity %></h2>
+                        <h2>$<%= p.price.toFixed(2) %></h2>
+                    </li>
+                <% }) %>
+            </ul>
+            <h2 class="centered">Total Price: $<%= totalPrice %></h2>
+            <form class="centered demo-order-form" action="/checkout" method="POST">
+                <input type="hidden" value="<%= csrfToken %>" name="_csrf">
+                <button class="btn" type="submit">Place demo order <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+            </form>
+    </main>
+    <%- include('../includes/end.ejs') %>

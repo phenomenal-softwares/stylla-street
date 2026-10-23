@@ -1,0 +1,74 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/product.css">
+</head>
+
+<body>
+   <%- include('../includes/navigation.ejs') %>
+
+    <main class="listing-page">
+        <% if (errorMessage) { %>
+            <div class="user-message user-message--error"><%= errorMessage %></div>
+        <% } %>
+        <% if (!editing) { %>
+            <section class="listing-intro">
+                <p class="eyebrow eyebrow--dark">Your collection</p>
+                <h1>Share a watch</h1>
+                <p>Each demo account can add up to <%= productLimit %> wristwatch listings.</p>
+                <p class="listing-quota"><i class="fa-solid fa-layer-group" aria-hidden="true"></i> <%= Math.max(productLimit - productCount, 0) %> of <%= productLimit %> listing spots available</p>
+            </section>
+        <% } %>
+        <% if (editing || productCount < productLimit) { %>
+        <form class="product-form" action="/admin/<% if (editing) { %>edit-product<% } else { %>add-product<% } %>" method="POST" enctype="multipart/form-data">
+            <h2><% if (editing) { %>Edit listing details<% } else { %>Listing details<% } %></h2>
+            <div class="form-control">
+                <label for="title">Watch name</label>
+                <input 
+                    class="<%= validationErrors.some((e) => e.path === 'title') ? 'invalid' : '' %>"
+                    type="text" 
+                    name="title" 
+                    id="title" 
+                    value="<% if (editing || hasError) { %><%= product.title %><% } %>"
+                    >
+            </div>
+            <div class="form-control">
+                <label for="image">Watch image <%= editing ? '(optional)' : '' %></label>
+                <input 
+                    type="file" 
+                    name="image" 
+                    id="image" 
+                    accept="image/png,image/jpeg"
+                    <%= editing ? '' : 'required' %>
+                    >
+            </div>
+            <div class="form-control">
+                <label for="price">Demo price</label>
+                <input 
+                    class="<%= validationErrors.some((e) => e.path === 'price') ? 'invalid' : '' %>"
+                    type="number" 
+                    name="price" 
+                    id="price" 
+                    step="0.01" 
+                    value="<% if (editing || hasError) { %><%= product.price %><% } %>"
+                    >
+            </div>
+            <div class="form-control">
+                <label for="description">Description</label>
+                <textarea 
+                    class="<%= validationErrors.some((e) => e.path === 'description') ? 'invalid' : '' %>"
+                    name="description" 
+                    id="description" 
+                    rows="5"
+                ><% if (editing || hasError) { %><%= product.description %><% } %></textarea>
+            </div>
+            <% if (editing) { %>
+                <input type="hidden" value="<%= product._id %>" name="productId">
+            <% } %>
+                <input type="hidden" value="<%= csrfToken %>" name="_csrf">
+            <button class="btn" type="submit"><% if (editing) { %>Update Product<% } else { %>Add Product<% } %></button>
+        </form>
+        <% } else { %>
+            <div class="listing-limit-notice"><i class="fa-solid fa-circle-check" aria-hidden="true"></i><p>You've reached your 2-listing limit. Remove one of your current listings before adding another.</p><a class="btn btn-secondary" href="/admin/products">Manage my listings</a></div>
+        <% } %>
+    </main>
+<%- include('../includes/end.ejs') %>

@@ -1,0 +1,53 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/auth.css">
+</head>
+
+<body>
+   <%- include('../includes/navigation.ejs') %>
+
+    <main>
+        <% if (errorMessage) { %>
+            <div class="user-message user-message--error"><%= errorMessage %></div>
+        <% } %>
+        <form class="login-form" action="/signup" method="POST" novalidate>
+            <div class="auth-form-heading">
+                <p class="eyebrow eyebrow--dark">Join the showcase</p>
+                <h1>Create your demo account</h1>
+                <p>Browse watches and share up to two listings of your own.</p>
+            </div>
+            <div class="form-control">
+                <label for="email">E-Mail</label>
+                <input 
+                    class="<%= validationErrors.some((e) => e.path === 'email') ? 'invalid' : '' %>"
+                    type="email" 
+                    name="email" 
+                    id="email" 
+                    value="<%= oldInput.email %>"
+                >
+            </div>
+            <div class="form-control">
+                <label for="password">Password</label>
+                <input
+                    class="<%= validationErrors.some((e) => e.path === 'password') ? 'invalid' : '' %>" 
+                    type="password" 
+                    name="password" 
+                    id="password" 
+                    value="<%= oldInput.password %>"
+                >
+            </div>
+            <div class="form-control">
+                <label for="confirmPassword">Confirm Password</label>
+                <input 
+                    class="<%= validationErrors.some((e) => e.path === 'confirmPassword') ? 'invalid' : '' %>"
+                    type="password" 
+                    name="confirmPassword" 
+                    id="confirmPassword" 
+                    value="<%= oldInput.confirmPassword %>"
+                >
+            </div>
+            <input type="hidden" value="<%= csrfToken %>" name="_csrf">
+            <button class="btn" type="submit"><i class="fa-solid fa-user-plus" aria-hidden="true"></i> Create account</button>
+        </form>
+    </main>
+<%- include('../includes/end.ejs') %>
