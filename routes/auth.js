@@ -1,15 +1,35 @@
 const express = require("express");
 const { check, body } = require("express-validator");
+const { rateLimit } = require("express-rate-limit");
 
 const authController = require("../controllers/auth");
 const User = require("../models/user");
 
 const router = express.Router();
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+const signupLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  limit: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+const passwordResetLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 router.get("/login", authController.getLogin);
 
 router.post(
   "/login",
+  loginLimiter,
   [
     body("email")
       .isEmail()
@@ -30,6 +50,7 @@ router.get("/signup", authController.getSignup);
 
 router.post(
   "/signup",
+  signupLimiter,
   [
     check("email")
       .isEmail()
@@ -67,10 +88,14 @@ router.post("/logout", authController.postLogout);
 
 router.get("/reset", authController.getReset);
 
-router.post("/reset", authController.postReset);
+router.post("/reset", passwordResetLimiter, authController.postReset);
 
 router.get("/reset/:token", authController.getNewPassword);
 
-router.post("/new-password", authController.postNewPassword);
+router.post(
+  "/new-password",
+  passwordResetLimiter,
+  authController.postNewPassword,
+);
 
 module.exports = router;

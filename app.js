@@ -14,6 +14,7 @@ const flash = require("connect-flash");
 const multer = require("multer");
 const helmet = require("helmet");
 const compression = require("compression");
+const cors = require("cors");
 
 const User = require("./models/user");
 
@@ -32,6 +33,7 @@ const fileFilter = (req, file, cb) => {
 const MONGODB_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@phenomenal.xisxj.mongodb.net/${process.env.MONGO_DB}?appName=phenomenal`;
 
 const app = express();
+app.set("trust proxy", 1);
 const store = new MongoDBStore({
   uri: MONGODB_URI,
   collection: "sessions",
@@ -40,6 +42,13 @@ const csrfProtection = csrf();
 
 app.set("view engine", "ejs");
 app.set("views", "views");
+
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://stylla-street.onrender.com"],
+    credentials: true,
+  }),
+);
 
 const authRoutes = require("./routes/auth");
 const adminRoutes = require("./routes/admin");
